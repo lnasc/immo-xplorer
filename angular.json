@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "immo-scrapper": {
+    "immo-xplorer": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/immo-scrapper",
+            "outputPath": "dist/immo-xplorer",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -62,18 +62,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "immo-scrapper:build"
+            "browserTarget": "immo-xplorer:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "immo-scrapper:build:production"
+              "browserTarget": "immo-xplorer:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "immo-scrapper:build"
+            "browserTarget": "immo-xplorer:build"
           }
         },
         "test": {
@@ -107,7 +107,7 @@
         }
       }
     },
-    "immo-scrapper-e2e": {
+    "immo-xplorer-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "prefix": "",
@@ -116,11 +116,11 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "immo-scrapper:serve"
+            "devServerTarget": "immo-xplorer:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "immo-scrapper:serve:production"
+              "devServerTarget": "immo-xplorer:serve:production"
             }
           }
         },
@@ -136,5 +136,5 @@
       }
     }
   },
-  "defaultProject": "immo-scrapper"
+  "defaultProject": "immo-xplorer"
 }

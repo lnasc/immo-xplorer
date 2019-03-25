@@ -10,7 +10,7 @@ import { AdMockService } from './services/ad-mock.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  public title = 'immo-scrapper';
+  public title = 'immo-xplorer';
   public searchResult: AdSearchResult;
 
   constructor(private adService: IAdService) {}
