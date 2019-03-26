@@ -1,4 +1,4 @@
-import { IAdService, AdMockService } from './services';
+import { IAdService, AdService } from './services';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
@@ -17,7 +17,7 @@ import { HttpClientModule } from '@angular/common/http';
   ],
   providers: [{
     provide: IAdService,
-    useClass: AdMockService
+    useClass: AdService
   }],
   bootstrap: [AppComponent]
 })

@@ -10,7 +10,9 @@ import { AdSearchResult } from '../models';
   providedIn: 'root'
 })
 export class AdService implements IAdService {
-  private baseUrl = 'http://localhost:4243';
+  // private baseUrl = 'http://localhost:4243';
+  private baseUrl = 'https://immo-xplore-api.azurewebsites.net/';
+
 
   constructor(private httpClient: HttpClient) {}
 
