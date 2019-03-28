@@ -1,10 +1,11 @@
-import { IAdService, AdService } from './services';
-import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
+import { IAdService, AdMockService } from './services';
 
 @NgModule({
   declarations: [
@@ -12,12 +13,13 @@ import { HttpClientModule } from '@angular/common/http';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule
   ],
   providers: [{
     provide: IAdService,
-    useClass: AdService
+    useClass: AdMockService
   }],
   bootstrap: [AppComponent]
 })

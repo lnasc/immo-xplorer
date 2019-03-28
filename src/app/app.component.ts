@@ -12,6 +12,7 @@ import { AdMockService } from './services/ad-mock.service';
 export class AppComponent implements OnInit {
   public title = 'immo-xplorer';
   public searchResult: AdSearchResult;
+  public columnsToDisplay = ['title', 'square', 'price', 'squarePrice', 'sellType', 'city', 'date', 'link']
 
   constructor(private adService: IAdService) {}
 
