@@ -2,5 +2,5 @@ import { Observable } from 'rxjs';
 import { AdSearchResult } from '../models';
 
 export abstract class IAdService  {
-  abstract searchAds(): Observable<AdSearchResult>;
+  abstract searchAds(filters: any): Observable<AdSearchResult>;
 }

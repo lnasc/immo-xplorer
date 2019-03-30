@@ -45,6 +45,8 @@ export interface Ad {
   urgent: boolean;
   price: number;
   squarePrice: number;
+  squarePriceData: SquarePriceData;
+  avgSquarePriceDelta: number;
   date: string;
   owner: AdOwner;
   attributes: AdAttributes;
@@ -56,4 +58,10 @@ export interface AdSearchResult {
   pages: number;
   nbResult: number;
   results: Ad[];
+}
+
+export interface SquarePriceData {
+  min: number;
+  avg: number;
+  max: number;
 }

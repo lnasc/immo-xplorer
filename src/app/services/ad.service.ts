@@ -16,7 +16,7 @@ export class AdService implements IAdService {
 
   constructor(private httpClient: HttpClient) {}
 
-  searchAds(): Observable<AdSearchResult> {
-    return this.httpClient.get<AdSearchResult>(`${this.baseUrl}/api/ads`);
+  searchAds(filters: any): Observable<AdSearchResult> {
+    return this.httpClient.post<AdSearchResult>(`${this.baseUrl}/api/ads`, filters);
   }
 }

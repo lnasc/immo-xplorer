@@ -33,29 +33,29 @@
       <div class="row form-group">
           <label for="typeLabel" class="col-sm-2 col-form-label">Fourchette de prix</label>
           <div class="col-sm-5">
-            <select class="form-control" id="typeLabel">
-              <option>50.000</option>
-              <option>60.000</option>
-              <option>70.000</option>
-              <option>80.000</option>
-              <option>90.000</option>
-              <option>100.000</option>
+            <select class="form-control" id="typeLabel" [(ngModel)]="priceRangeMin">
+              <option value="50000">50.000</option>
+              <option value="60000">60.000</option>
+              <option value="70000">70.000</option>
+              <option value="80000">80.000</option>
+              <option value="90000">90.000</option>
+              <option value="100000">100.000</option>
             </select>
           </div>
           <div class="col-sm-5">
-              <select class="form-control" id="typeLabel">
-                <option>100.000</option>
-                <option>120.000</option>
-                <option>140.000</option>
-                <option>160.000</option>
-                <option>180.000</option>
-                <option>200.000</option>
+              <select class="form-control" id="typeLabel" [(ngModel)]="priceRangeMax">
+                <option value="100000">100.000</option>
+                <option value="120000">120.000</option>
+                <option value="140000">140.000</option>
+                <option value="160000">160.000</option>
+                <option value="180000">180.000</option>
+                <option value="200000">200.000</option>
               </select>
             </div>
       </div>
       <div class="row form-group">
         <div class="col-sm-12">
-          <button type="button" class="btn btn-primary float-right">Search</button>
+          <button type="button" class="btn btn-primary float-right" (click)="onSearchClick()">Search</button>
         </div>
       </div>
     </div>
@@ -66,6 +66,8 @@
     <th>Square (m²)</th>
     <th>Price</th>
     <th>€/m²</th>
+    <th>€/m² moy.</th>
+    <th>€/m² delta</th>
     <th>Type</th>
     <th>Location</th>
     <th>Date</th>
@@ -77,6 +79,8 @@
       <td>{{ ad.attributes.square }}</td>
       <td>{{ ad.price }}</td>
       <td>{{ ad.squarePrice }}</td>
+      <td>{{ ad.squarePriceData.avg }}</td>
+      <td>{{ ad.avgSquarePriceDelta }}</td>
       <td>{{ ad.attributes.immo_sell_type }}</td>
       <td>{{ ad.location.city }}</td>
       <td>{{ ad.date | date:'d/M/yy' }}</td>
