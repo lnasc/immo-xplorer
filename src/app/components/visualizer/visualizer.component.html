@@ -1,32 +1,89 @@
-<span>{{searchResult?.nbResult}}</span>
 <div class="container-fluid">
+  <div class="row filters-panel">
+    <div class="col-sm-12">
+      <div class="card">
+          <div class="card-header">
+            <h4 class="filters-title">
+              <a data-toggle="collapse" role="tab" href="#collapseFilters" role="button" aria-expanded="false" aria-controls="collapseExample">
+                Filters
+              </a>
+              <span style="float:right">
+                  {{searchResult?.nbResult}} results
+              </span>
+            </h4>
+          </div>
+          <div class="card-body collapse" id="collapseFilters">
+            <div class="row form-group">
+              <label for="freeLabel" class="col-sm-2 col-form-label">Critères</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="freeLabel">
+              </div>
+            </div>
+            <div class="row form-group">
+                <label for="typeLabel" class="col-sm-2 col-form-label">Fourchette de prix</label>
+                <div class="col-sm-5">
+                  <select class="form-control" id="typeLabel" [(ngModel)]="priceRangeMin">
+                    <option value="50000">50.000</option>
+                    <option value="60000">60.000</option>
+                    <option value="70000">70.000</option>
+                    <option value="80000">80.000</option>
+                    <option value="90000">90.000</option>
+                    <option value="100000">100.000</option>
+                  </select>
+                </div>
+                <div class="col-sm-5">
+                    <select class="form-control" id="typeLabel" [(ngModel)]="priceRangeMax">
+                      <option value="100000">100.000</option>
+                      <option value="120000">120.000</option>
+                      <option value="140000">140.000</option>
+                      <option value="160000">160.000</option>
+                      <option value="180000">180.000</option>
+                      <option value="200000">200.000</option>
+                    </select>
+                  </div>
+            </div>
+            <div class="row form-group">
+              <div class="col-sm-12">
+                <button type="button" class="btn btn-primary float-right search-btn" (click)="onSearchClick()">
+                  <span *ngIf="!isLoading; else loadingIcon">Search</span>
+                  <ng-template #loadingIcon>
+                      <i class="fas fa-spinner fa-pulse"></i>
+                  </ng-template>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
   <div class="row">
     <div
       *ngFor="let ad of searchResult?.results"
-      class="wrapper col-6 col-sm-4 col-lg-3 col-xl-2">
+      class="wrapper col-12 col-sm-4 col-lg-3 col-xl-2">
       <div class="card ad">
         <!-- <img [attr.src]="ad.images && ad.images.length ? ad.images[0] : noImageSrc" class="card-img-top" alt="..."> -->
-        <div id="carouselExampleIndicators"
-            class="carousel slide card-img-top"
+        <div class="carousel slide card-img-top"
             data-ride="carousel"
             [immoCarousel]="{ interval: false }"
             [immoCarouselInit]="dataLoaded"
             *ngIf="ad.images && ad.images.length; else noImage">
-            <!-- <ol class="carousel-indicators">
-              <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-              <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-              <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-            </ol> -->
+            <ol class="carousel-indicators">
+              <li
+              *ngFor="let imageSrc of ad.images; let i = index"
+              [immoCarouselIndicator]="i" class="active"></li>
+            </ol>
             <div class="carousel-inner">
-              <div *ngFor="let imageSrc of ad.images; let i = index"  class="carousel-item" [class.active]="i===0">
+              <div *ngFor="let imageSrc of ad.images; let i = index"
+                class="carousel-item"
+                [class.active]="i===0">
                 <img [attr.src]="imageSrc" class="d-block w-100" alt="...">
               </div>
             </div>
-            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+            <a class="carousel-control-prev" href="#" role="button" immoCarouselPrevious>
               <span class="carousel-control-prev-icon" aria-hidden="true"></span>
               <span class="sr-only">Previous</span>
             </a>
-            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+            <a class="carousel-control-next" href="#" role="button" immoCarouselNext>
               <span class="carousel-control-next-icon" aria-hidden="true"></span>
               <span class="sr-only">Next</span>
             </a>

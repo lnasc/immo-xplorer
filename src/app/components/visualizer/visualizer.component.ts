@@ -19,6 +19,7 @@ export class VisualizerComponent implements OnInit {
   // tslint:disable-next-line:max-line-length
   public noImageSrc='https://www.freeiconspng.com/uploads/no-image-icon-4.png';
   public dataLoaded: boolean;
+  public isLoading: boolean;
 
   constructor(private adService: IAdService) {}
 
@@ -33,6 +34,7 @@ export class VisualizerComponent implements OnInit {
   }
 
   private search(): void {
+    this.isLoading = true;
     this.adService.searchAds({
       priceRange: {
         min: parseInt(this.priceRangeMin, 10),
@@ -48,6 +50,7 @@ export class VisualizerComponent implements OnInit {
     ).subscribe(result => {
       this.searchResult = result;
       this.prepareData();
+      this.isLoading = false;
       this.dataLoaded = true;
     });
   }

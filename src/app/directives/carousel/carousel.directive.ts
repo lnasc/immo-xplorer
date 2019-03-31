@@ -1,22 +1,74 @@
 import { AfterContentChecked, Directive, ElementRef, Input,
-  OnChanges, Renderer2,  SimpleChanges, ViewChild, ViewChildren, QueryList } from '@angular/core';
+  Renderer2,  SimpleChanges, ContentChild, OnInit, OnDestroy } from '@angular/core';
+import { Subject, Subscription } from 'rxjs';
 
 declare var $: any;
 
+@Directive({selector: '[immoCarouselNext]'})
+export class CarouselNextDirective implements OnInit {
+  private clickSubject = new Subject();
+  public click$ = this.clickSubject.asObservable();
+
+  constructor(
+    private el: ElementRef,
+    private renderer: Renderer2) {
+  }
+
+  public ngOnInit(): void {
+    this.renderer.listen(this.el.nativeElement, 'click', e => {
+      this.clickSubject.next();
+    });
+  }
+}
+
+@Directive({selector: '[immoCarouselPrevious]'})
+export class CarouselPreviousDirective implements OnInit {
+  private clickSubject = new Subject();
+  public click$ = this.clickSubject.asObservable();
+
+  constructor(
+    private el: ElementRef,
+    private renderer: Renderer2) {
+  }
+
+  public ngOnInit(): void {
+    this.renderer.listen(this.el.nativeElement, 'click', e => {
+      this.clickSubject.next();
+    });
+  }
+}
+
+@Directive({selector: '[immoCarouselIndicator]'})
+export class CarouselIndicatorDirective implements OnInit {
+  private clickSubject = new Subject();
+  public click$ = this.clickSubject.asObservable();
+  @Input('immoCarouselIndicator') index: number;
+
+  constructor(
+    private el: ElementRef,
+    private renderer: Renderer2) {
+  }
+
+  public ngOnInit(): void {
+    this.renderer.listen(this.el.nativeElement, 'click', e => {
+      this.clickSubject.next(this.index);
+    });
+  }
+}
+
 @Directive({
   selector: '[immoCarousel]',
-  queries: {
-    goToPreviousElem: new ViewChildren('.carousel-control-prev'),
-    goToNextElem: new ViewChildren('.carousel-control-next')
-  }
 })
-export class CarouselDirective implements AfterContentChecked, OnChanges {
+export class CarouselDirective implements AfterContentChecked, OnDestroy {
   @Input('immoCarousel') options: any;
   @Input('immoCarouselInit') init: any;
+  @ContentChild(CarouselNextDirective) nextElem: CarouselNextDirective;
+  @ContentChild(CarouselPreviousDirective) previousElem: CarouselPreviousDirective;
+  @ContentChild(CarouselIndicatorDirective) indicatorElem: CarouselIndicatorDirective;
 
-  private goToPreviousElem: QueryList<ElementRef>;
-  private goToNextElem: QueryList<ElementRef>;
-
+  private nextSub: Subscription;
+  private prevSub: Subscription;
+  private indicatorSub: Subscription;
   private initNeeded: boolean;
   private carouselWrapper: any;
 
@@ -36,16 +88,24 @@ export class CarouselDirective implements AfterContentChecked, OnChanges {
       this.carouselWrapper.carousel(this.options);
       this.initNeeded = false;
 
-      if (this.goToNextElem) {
-        this.renderer.listen(this.goToNextElem, 'click', e => {
-          this.carouselWrapper.carousel('next');
-        });
+      if (this.nextElem) {
+        this.nextSub = this.nextElem.click$.subscribe(x =>
+          this.carouselWrapper.carousel('next'));
       }
-      if (this.goToPreviousElem) {
-        this.renderer.listen(this.goToPreviousElem, 'click', e => {
-          this.carouselWrapper.carousel('prev');
-        });
+      if (this.previousElem) {
+        this.prevSub = this.previousElem.click$.subscribe(x =>
+          this.carouselWrapper.carousel('prev'));
+      }
+      if (this.indicatorElem) {
+        this.indicatorSub = this.indicatorElem.click$.subscribe(i =>
+          this.carouselWrapper.carousel(i));
       }
     }
+  }
+
+  public ngOnDestroy(): void {
+    this.nextSub.unsubscribe();
+    this.prevSub.unsubscribe();
+    this.indicatorSub.unsubscribe();
   }
 }
