@@ -7,10 +7,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AdService, IAdService } from './services';
+import { VisualizerComponent, VisualizerSimpleComponent } from './components';
+import { CarouselDirective } from './directives';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    CarouselDirective,
+    VisualizerComponent,
+    VisualizerSimpleComponent
   ],
   imports: [
     AppRoutingModule,

@@ -1,0 +1,84 @@
+<label for="">Results:&nbsp;</label>
+<span>{{searchResult?.nbResult}}</span>
+  <div class="card">
+    <div class="card-header">
+      <h4 class="filters-title">
+        <a data-toggle="collapse" role="tab" href="#collapseFilters" role="button" aria-expanded="false" aria-controls="collapseExample">
+          Filters
+        </a>
+      </h4>
+    </div>
+    <div class="card-body collapse container" id="collapseFilters">
+      <div class="row form-group">
+          <label for="typeLabel" class="col-sm-2 col-form-label">Type</label>
+          <div class="col-sm-10">
+            <select class="form-control" id="typeLabel">
+              <option>Ancien</option>
+              <option>Viager</option>
+            </select>
+          </div>
+      </div>
+      <div class="row form-group">
+        <label for="freeLabel" class="col-sm-2 col-form-label">Critères</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="freeLabel">
+        </div>
+      </div>
+      <div class="row form-group">
+          <label for="typeLabel" class="col-sm-2 col-form-label">Fourchette de prix</label>
+          <div class="col-sm-5">
+            <select class="form-control" id="typeLabel" [(ngModel)]="priceRangeMin">
+              <option value="50000">50.000</option>
+              <option value="60000">60.000</option>
+              <option value="70000">70.000</option>
+              <option value="80000">80.000</option>
+              <option value="90000">90.000</option>
+              <option value="100000">100.000</option>
+            </select>
+          </div>
+          <div class="col-sm-5">
+              <select class="form-control" id="typeLabel" [(ngModel)]="priceRangeMax">
+                <option value="100000">100.000</option>
+                <option value="120000">120.000</option>
+                <option value="140000">140.000</option>
+                <option value="160000">160.000</option>
+                <option value="180000">180.000</option>
+                <option value="200000">200.000</option>
+              </select>
+            </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-12">
+          <button type="button" class="btn btn-primary float-right" (click)="onSearchClick()">Search</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<table class="table">
+  <thead>
+    <th>Title</th>
+    <th>Square (m²)</th>
+    <th>Price</th>
+    <th>€/m²</th>
+    <th>€/m² moy.</th>
+    <th>€/m² delta</th>
+    <th>Type</th>
+    <th>Location</th>
+    <th>Date</th>
+    <th>Link</th>
+  </thead>
+  <tbody>
+    <tr *ngFor="let ad of searchResult?.results">
+      <td>{{ ad.title }}</td>
+      <td>{{ ad.attributes.square }}</td>
+      <td>{{ ad.price }}</td>
+      <td>{{ ad.squarePrice }}</td>
+      <td>{{ ad.squarePriceData.avg }}</td>
+      <td>{{ ad.avgSquarePriceDelta }}</td>
+      <td>{{ ad.attributes.immo_sell_type }}</td>
+      <td>{{ ad.location.city }}</td>
+      <td>{{ ad.date | date:'d/M/yy' }}</td>
+      <td><a [attr.href]="ad.link">Here</a></td>
+    </tr>
+  </tbody>
+</table>

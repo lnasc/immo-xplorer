@@ -1,0 +1,52 @@
+<span>{{searchResult?.nbResult}}</span>
+<div class="container-fluid">
+  <div class="row">
+    <div
+      *ngFor="let ad of searchResult?.results"
+      class="wrapper col-6 col-sm-4 col-lg-3 col-xl-2">
+      <div class="card ad">
+        <!-- <img [attr.src]="ad.images && ad.images.length ? ad.images[0] : noImageSrc" class="card-img-top" alt="..."> -->
+        <div id="carouselExampleIndicators"
+            class="carousel slide card-img-top"
+            data-ride="carousel"
+            [immoCarousel]="{ interval: false }"
+            [immoCarouselInit]="dataLoaded"
+            *ngIf="ad.images && ad.images.length; else noImage">
+            <!-- <ol class="carousel-indicators">
+              <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+              <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+              <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+            </ol> -->
+            <div class="carousel-inner">
+              <div *ngFor="let imageSrc of ad.images; let i = index"  class="carousel-item" [class.active]="i===0">
+                <img [attr.src]="imageSrc" class="d-block w-100" alt="...">
+              </div>
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="sr-only">Next</span>
+            </a>
+        </div>
+        <ng-template #noImage>
+          <img [attr.src]="noImageSrc">
+        </ng-template>
+        <div class="card-body">
+          <h5 class="card-title">
+            <span>{{ad.attributes.square}}m² {{ad.location.city}} {{ad.price | currency:'EUR':'symbol':'1.0-0'}}</span>
+          </h5>
+          <h6 class="card-title">{{ad.title}}</h6>
+           <p class="card-text">
+            <span><i class="fas fa-search-dollar"></i>&nbsp;{{ ad.avgSquarePriceDelta }}%</span>
+            <span><i class="fas fa-home"></i>&nbsp;{{ ad.squarePrice | currency:'EUR':'symbol':'1.0-0' }}</span>
+            <span><i class="fas fa-city"></i>&nbsp;{{ ad.squarePriceData.avg | currency:'EUR':'symbol':'1.0-0' }}</span>
+          </p>
+          <a [attr.href]="ad.link" class="btn btn-primary">View</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
