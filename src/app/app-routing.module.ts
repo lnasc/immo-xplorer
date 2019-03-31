@@ -5,10 +5,10 @@ import { VisualizerComponent } from './components';
 import { VisualizerSimpleComponent } from './components/visualizer-simple/visualizer-simple.component';
 
 const routes: Routes = [{
-  path: '',
+  path: 'simple',
   component: VisualizerSimpleComponent
 }, {
-  path: 'visualizer',
+  path: '',
   component: VisualizerComponent
 }];
 
