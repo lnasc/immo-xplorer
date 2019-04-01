@@ -8,14 +8,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AdService, IAdService } from './services';
 import { VisualizerComponent, VisualizerSimpleComponent } from './components';
-import { CarouselDirective, CarouselIndicatorDirective, CarouselNextDirective, CarouselPreviousDirective } from './directives';
+import { CarouselDirective } from './directives';
 
 @NgModule({
   declarations: [
     AppComponent,
-    CarouselIndicatorDirective,
-    CarouselNextDirective,
-    CarouselPreviousDirective,
     CarouselDirective,
     VisualizerComponent,
     VisualizerSimpleComponent
