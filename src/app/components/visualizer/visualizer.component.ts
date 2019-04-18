@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Ad } from './../../models/ad.model';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+
+import { Observable, interval } from 'rxjs';
+import { first, map, switchMap, switchMapTo, tap } from 'rxjs/operators';
 
 import { AdSearchResult } from '../../models';
-import { IAdService } from '../../services';
-
-import { first, map } from 'rxjs/operators';
+import { IAdService, QueryService } from '../../services';
 
 @Component({
   selector: 'app-visualizer',
@@ -11,7 +13,6 @@ import { first, map } from 'rxjs/operators';
   styleUrls: ['./visualizer.component.scss']
 })
 export class VisualizerComponent implements OnInit {
-
   public searchResult: AdSearchResult;
   public columnsToDisplay = ['title', 'square', 'price', 'squarePrice', 'sellType', 'city', 'date', 'link']
   public priceRangeMin = '50000';
@@ -21,10 +22,51 @@ export class VisualizerComponent implements OnInit {
   public dataLoaded: boolean;
   public isLoading: boolean;
 
-  constructor(private adService: IAdService) {}
+  private search$: Observable<AdSearchResult>;
+
+  constructor(
+    private adService: IAdService,
+    private queryService: QueryService) {
+      this.search$ = this.buildSearchQuery();
+    }
 
   public ngOnInit(): void {
-    this.search();
+    this.isLoading = true;
+    this.queryService.retrieveDefaultQuery()
+    .pipe(
+      tap(defaultQuery => {
+        this.priceRangeMin = defaultQuery.priceRangeMin.toString();
+        this.priceRangeMax = defaultQuery.priceRangeMax.toString();
+      }),
+      switchMapTo(this.search$),
+      first()
+    ).subscribe(() => this.afterDataLoaded());
+  }
+
+  public onPriceRangeMinModelChange(value: string) {
+    this.priceRangeMin = value;
+    this.saveDefaultQuery();
+  }
+
+  public onPriceRangeMaxModelChange(value: string) {
+    this.priceRangeMax = value;
+    this.saveDefaultQuery();
+  }
+
+  public onSearchClick() {
+    this.search$.pipe(
+      first()
+    ).subscribe(() => this.afterDataLoaded());
+  }
+
+  public saveDefaultQuery() {
+    this.queryService.createQuery({
+      priceRangeMin: parseInt(this.priceRangeMin, 10),
+      priceRangeMax: parseInt(this.priceRangeMax, 10),
+      isDefault: true
+    })
+    .pipe(first())
+    .subscribe();
   }
 
   private prepareData(): void {
@@ -33,30 +75,28 @@ export class VisualizerComponent implements OnInit {
     // });
   }
 
-  private search(): void {
+  private buildSearchQuery(): Observable<AdSearchResult> {
     this.isLoading = true;
-    this.adService.searchAds({
+    return this.adService.searchAds({
       priceRange: {
         min: parseInt(this.priceRangeMin, 10),
         max: parseInt(this.priceRangeMax, 10)
       }
     }).pipe(
-      first(),
       map(response => {
         response.results = response.results.filter(ad => ad.attributes.immo_sell_type !== 'viager');
         response.nbResult = response.results.length;
         return response;
+      }),
+      tap(result => {
+        this.searchResult = result;
+        this.prepareData();
       })
-    ).subscribe(result => {
-      this.searchResult = result;
-      this.prepareData();
-      this.isLoading = false;
-      this.dataLoaded = true;
-    });
+    );
   }
 
-  public onSearchClick() {
-    this.search();
+  private afterDataLoaded() {
+    this.isLoading = false;
+    this.dataLoaded = true;
   }
-
 }
