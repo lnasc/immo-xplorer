@@ -22,12 +22,9 @@ export class VisualizerComponent implements OnInit {
   public dataLoaded: boolean;
   public isLoading: boolean;
 
-  private search$: Observable<AdSearchResult>;
-
   constructor(
     private adService: IAdService,
     private queryService: QueryService) {
-      this.search$ = this.buildSearchQuery();
     }
 
   public ngOnInit(): void {
@@ -38,7 +35,7 @@ export class VisualizerComponent implements OnInit {
         this.priceRangeMin = defaultQuery.priceRangeMin.toString();
         this.priceRangeMax = defaultQuery.priceRangeMax.toString();
       }),
-      switchMapTo(this.search$),
+      switchMap(x => this.searchAds()),
       first()
     ).subscribe(() => this.afterDataLoaded());
   }
@@ -54,7 +51,7 @@ export class VisualizerComponent implements OnInit {
   }
 
   public onSearchClick() {
-    this.search$.pipe(
+    this.searchAds().pipe(
       first()
     ).subscribe(() => this.afterDataLoaded());
   }
@@ -75,7 +72,7 @@ export class VisualizerComponent implements OnInit {
     // });
   }
 
-  private buildSearchQuery(): Observable<AdSearchResult> {
+  private searchAds(): Observable<AdSearchResult> {
     this.isLoading = true;
     return this.adService.searchAds({
       priceRange: {
